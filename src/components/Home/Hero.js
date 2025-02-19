@@ -1,13 +1,14 @@
 import React from 'react'
 
 const Hero = () => {
-  return (
-    <div>
-      <h1>Find & Discover Players</h1>
-      <h1>Near You</h1>
-      <h2>Best free Website to find and Discover game partner/player near you for your fav game</h2>
-    </div>
-  )
+    return (
+        <div className='text-center'>
+            <h1 className='text-[35px] font-extrabold text-center'>Find & Discover Players<br></br>
+                <span className='text-blue-500'>Near You</span>
+            </h1>
+            <h2 className='text-gray-500 px-8 md:px-16'>Best free Website to find and Discover game partner/player near you for your fav game</h2>
+        </div>
+    )
 }
 
 export default Hero
