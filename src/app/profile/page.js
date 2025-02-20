@@ -6,36 +6,59 @@ import React, { useEffect, useState } from 'react'
 import app from '../../../shared/FirebaseConfig';
 import PostItem from '@/components/Home/PostItem';
 import Toast from '@/components/Toast';
+import axios from 'axios';
+
 
 const Profile = () => {
     const { data: session } = useSession();
     const [userPost, setUserPost] = useState([]);
-    const db = getFirestore(app);
-
     const [showToast, setShowToast] = useState(false);
 
-    useEffect(() => {
+
+    const db = getFirestore(app);
+
+    useEffect( () => {
+
+        // use async function to get user post.can't add async to useEffect
+        const getUserPost = async () => {
+            if (session?.user.email) {
+                // the first question mark after post is a query parameter
+                //when we make the request, only /api/posts will be sent to the server, even the parameter will be sent, but it will not be visible in the URL. 
+                // it's just a way to send the parameter to the server
+                const {data} = await axios.get(`/api/posts?email=${session?.user.email}`);
+                console.log(data);
+                setUserPost(data);
+            }
+        }
+        
+
         getUserPost();
     }, [session])
 
-    const getUserPost = async () => {
-        if (session?.user.email) {
-            const q = query(collection(db, "posts"), where("email", "==", session?.user.email))
-            const querySnapshot = await getDocs(q);
-            querySnapshot.forEach((doc) => {
-                console.log(doc.id, "=>", doc.data());
+    // const getUserPost = async () => {
+    //     if (session?.user.email) {
+    //         const q = query(collection(db, "posts"), where("email", "==", session?.user.email))
+    //         const querySnapshot = await getDocs(q);
+    //         querySnapshot.forEach((doc) => {
+    //             console.log(doc.id, "=>", doc.data());
 
-                let data = doc.data();
-                data.id = doc.id;
-                setUserPost(userPost => [...userPost, data]);
-            })
-        }
-
-    }
+    //             let data = doc.data();
+    //             data.id = doc.id;
+    //             setUserPost(userPost => [...userPost, data]);
+    //         })
+    //     }
+    // }
 
     const onDeletePost = async (id) => {
-        await deleteDoc(doc(db, "posts", id));
-        setShowToast(true)
+        const res = await axios.delete(`/api/posts/${id}`);
+        console.log(res);
+        
+        // await deleteDoc(doc(db, "posts", id));
+
+        if (res.status === 200) {
+            setShowToast(true)
+        }
+        
     }
 
     return (
