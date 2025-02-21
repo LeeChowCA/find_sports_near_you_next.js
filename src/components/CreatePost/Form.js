@@ -8,6 +8,7 @@ import {
     ref, uploadBytes
 } from "firebase/storage";
 import Toast from "../../components/Toast";
+import axios from "axios";
 
 function Form() {
     const [inputs, setInputs] = useState({});
@@ -53,13 +54,10 @@ function Form() {
         // uploadBytes(storageRef, file).then((snapshot) => {
         //     console.log('Uploaded a blob or file!');
         //   }) ;
-        savePost();
-    };
+        console.log(inputs);
 
-    const savePost = async () => {
-        await setDoc(doc(db, "posts", Date.now().toString()), inputs);
-        console.log(inputs)
-    }
+        axios.post(`/api/posts?email=${session?.user.email}`, inputs);
+    };
 
     return (
         <div className="mt-4">

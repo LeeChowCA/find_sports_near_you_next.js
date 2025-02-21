@@ -1,10 +1,13 @@
 import React from 'react'
-import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore';
+import { getFirestore, collection, query, where, getDocs, doc ,addDoc, setDoc} from 'firebase/firestore';
 import { NextResponse } from 'next/server';
 import app from '../../../../shared/FirebaseConfig';
 
 const GET = async (request) => {
     const { searchParams } = new URL(request.url);
+
+    // URLSearchParams { 'email' => 'zhoujianpingzx@gmail.com' } searchParams.is the content of the searchParams.so we need
+    // to get the email from the searchParams using the get method
     const email = searchParams.get('email');
 
     if (!email) {
@@ -35,8 +38,16 @@ const GET = async (request) => {
     }
 }
 
-const POST = async (request) => {
-    
+export async function POST(request) {
+    try {
+        const db = getFirestore(app);
+        const data = await request.json();
+        await setDoc(doc(db, "posts", Date.now().toString()), data);
+        return NextResponse.json({ id: 0 }, { status: 201 });
+    } catch (error) {
+        console.error('Error creating post:', error);
+        return NextResponse.json({ error: 'An error occurred while creating the post' }, { status: 500 });
+    }
 }
 
 export {GET}

@@ -31,23 +31,22 @@ const Profile = () => {
             }
         }
         
-
         getUserPost();
     }, [session])
 
-    // const getUserPost = async () => {
-    //     if (session?.user.email) {
-    //         const q = query(collection(db, "posts"), where("email", "==", session?.user.email))
-    //         const querySnapshot = await getDocs(q);
-    //         querySnapshot.forEach((doc) => {
-    //             console.log(doc.id, "=>", doc.data());
+    /*const getUserPost = async () => {
+        if (session?.user.email) {
+            const q = query(collection(db, "posts"), where("email", "==", session?.user.email))
+            const querySnapshot = await getDocs(q);
+            querySnapshot.forEach((doc) => {
+                console.log(doc.id, "=>", doc.data());
 
-    //             let data = doc.data();
-    //             data.id = doc.id;
-    //             setUserPost(userPost => [...userPost, data]);
-    //         })
-    //     }
-    // }
+                let data = doc.data();
+                data.id = doc.id;
+                setUserPost(userPost => [...userPost, data]);
+            })
+        }
+    }*/
 
     const onDeletePost = async (id) => {
         const res = await axios.delete(`/api/posts/${id}`);
