@@ -10,11 +10,14 @@ const USER_IMAGE = 'https://miro.medium.com/v2/resize:fit:640/format:webp/1*B3Z3
 
 const Header = () => {
   const router=useRouter();
-  const {data: session} = useSession();
+  const {data: session} = useSession(); 
 
   return (
     <div className='flex justify-between p-3 border-b-[2px] border-[#FF3366]'>
-      <Image alt='logo' src='/images/logo.png' width={120} height={120} className='hover:cursor-pointer' onClick={() => router.push('/')}/>
+      <div className='flex gap-4 items-end'>
+      <Image alt='logo' src='/images/my_logo.jpg' width={100} height={80} className='hover:cursor-pointer' onClick={() => router.push('/')}/>
+      <p className='m-0 hidden sm:block text-base text-gray-600 italic '>Sync up with local sports enthusiasts</p>
+      </div>
       <div className='flex gap-4'>
         <button onClick={()=>router.push('/create-post')} className='bg-black p-2 px-3 text-white rounded-full'>
           <span className='hidden sm:block'>CREATE POST</span>
